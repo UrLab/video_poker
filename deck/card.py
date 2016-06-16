@@ -8,7 +8,7 @@ class Card(object):
 
     @staticmethod
     def _test_card_validity(rank, suit):
-        if rank < 1 or rank > 13:
+        if rank < 2 or rank > 14:
             raise ValueError
         if suit not in ['heart', 'diamond', 'spade', 'club']:
             raise ValueError
@@ -32,5 +32,26 @@ class Card(object):
                 and self.rank == other.get_rank()
                 and self.suit == other.get_suit())
 
+    def _cmpkey(self):
+        return self.rank
+
+    def _compare(self, other, method):
+        return method(self._cmpkey(), other._cmpkey())
+
     def __neq__(self, other):
         return not self.__eq__(other)
+
+    def __lt__(self, other):
+        return self._compare(other, lambda s, o: s < o)
+
+    def __le__(self, other):
+        return self._compare(other, lambda s, o: s <= o)
+
+    def __ge__(self, other):
+        return self._compare(other, lambda s, o: s >= o)
+
+    def __gt__(self, other):
+        return self._compare(other, lambda s, o: s > o)
+
+    def __repr__(self):
+        return '%d of %s' % (self.rank, self.suit)

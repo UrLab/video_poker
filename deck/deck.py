@@ -14,7 +14,7 @@ class Deck(object):
 
     def init_cards(self):
         for suit in SUIT:
-            for rank in range(1, 14):
+            for rank in range(2, 15):
                 self.cards.append(Card(rank, suit))
 
     def shuffle(self):
@@ -24,9 +24,9 @@ class Deck(object):
         ordered = True
         i = 0
         while ordered and i < len(SUIT):
-            j = 1
-            while ordered and j < 14:
-                card = self[i * 13 + j]
+            j = 2
+            while ordered and j < 15:
+                card = self[i * 13 + j - 1]
                 if card.get_rank() != j or card.get_suit() != SUIT[i]:
                     ordered = False
                 j += 1

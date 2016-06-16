@@ -11,6 +11,9 @@ class Hand(object):
             raise HandFullException
         self.cards.append(card)
 
+    def sorted(self):
+        return sorted(self.cards)
+
     def __len__(self):
         return len(self.cards)
 

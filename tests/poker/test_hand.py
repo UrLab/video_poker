@@ -21,3 +21,13 @@ def test_hand_cannot_be_greater_than_5():
     with pytest.raises(HandFullException):
         for i in range(10):
             hand.receive(deck.deal())
+
+
+def test_hand_storing():
+    deck = Deck()
+    hand = Hand()
+    for i in range(4):
+        hand.receive(deck.deal())
+    sorted_hand = hand.sorted()
+    for i in range(1, len(hand)):
+        assert sorted_hand[i] >= sorted_hand[i-1]
