@@ -7,6 +7,8 @@ from poker.scoring import is_royal_flush, is_straight_flush, is_4_of_a_kind, \
 
 def test_empty_hand_has_no_value():
     hand = Hand()
+    for score in SCORES:
+        assert not score['tester'](hand)
 
 
 def test_royal_flush():
