@@ -45,3 +45,16 @@ def test_invalid_suit_set_rejected():
     card = Card(1, 'heart')
     with pytest.raises(ValueError):
         card.set_suit('he')
+
+
+def test_card_equality():
+    card0 = Card(1, 'heart')
+    card1 = Card(1, 'heart')
+    card2 = Card(1, 'club')
+    card3 = Card(2, 'heart')
+    card4 = Card(2, 'club')
+
+    assert card0 == card1
+    assert card0 != card2
+    assert card0 != card3
+    assert card0 != card4

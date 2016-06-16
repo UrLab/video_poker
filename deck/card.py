@@ -26,3 +26,11 @@ class Card(object):
     def set_suit(self, suit):
         self._test_card_validity(self.rank, suit)
         self.suit = suit
+
+    def __eq__(self, other):
+        return (isinstance(other, self.__class__)
+                and self.rank == other.get_rank()
+                and self.suit == other.get_suit())
+
+    def __neq__(self, other):
+        return not self.__eq__(other)
