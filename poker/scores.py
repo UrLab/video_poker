@@ -50,4 +50,10 @@ SCORES = [
         'payout': 2,
         'tester': is_two_pair
     },
+    {
+        'name': 'nothing',
+        'ranking': 8,
+        'payout': 0,
+        'tester': lambda x: True
+    }
 ]
