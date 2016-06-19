@@ -89,7 +89,7 @@ def test_flush():
     assert is_flush(hand)
 
 
-def tet_straight():
+def test__is_not_straight():
     hand = Hand()
     hand.receive(Card(12, 'heart'))
     hand.receive(Card(11, 'spade'))
@@ -97,6 +97,16 @@ def tet_straight():
     hand.receive(Card(9, 'diamond'))
     hand.receive(Card(8, 'heart'))
     assert is_straight(hand)
+
+
+def test_is_straight():
+    hand = Hand()
+    hand.receive(Card(12, 'club'))
+    hand.receive(Card(8, 'heart'))
+    hand.receive(Card(8, 'spade'))
+    hand.receive(Card(8, 'club'))
+    hand.receive(Card(11, 'spade'))
+    assert not is_straight(hand)
 
 
 def test_straight_starting_with_ace():

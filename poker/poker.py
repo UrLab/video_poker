@@ -36,7 +36,7 @@ class PokerGame(object):
     def validate_hand(self):
         score = self.test_hand()
         self.balance -= self.bet
-        self.balance += score['payout']
+        self.balance += score['payout'] * self.bet
         return score
 
     def replace(self, card):

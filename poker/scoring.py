@@ -51,8 +51,22 @@ def is_flush(hand):
 def is_straight(hand):
     if len(hand) != 5:
         return False
+    # a straight has all different ranking
+
+
+    i = 0
+    while i < len(hand):
+        j = 0
+        while j < len(hand):
+            if i != j:
+                if hand[i].get_rank() == hand[j].get_rank():
+                    return False
+            j += 1
+        i += 1
+
     sorted_hand = hand.sorted()
     correct = sorted_hand[0].get_rank() + 4 == sorted_hand[-1].get_rank()
+
     if not correct and sorted_hand[-1].get_rank() == 14:
         # if the biggest is a ace, we need to check if we don't have
         # 1 2 3 4 5
