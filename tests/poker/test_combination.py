@@ -2,13 +2,30 @@ from deck.card import Card
 from poker.hand import Hand
 from poker.scores import SCORES
 from poker.scoring import is_royal_flush, is_straight_flush, is_4_of_a_kind, \
-    is_full_house, is_flush, is_straight, is_3_of_a_kind, is_two_pair
+    is_full_house, is_flush, is_straight, is_3_of_a_kind, is_two_pair, \
+    is_nothing
 
 
 def test_empty_hand_has_no_value():
     hand = Hand()
     for score in SCORES:
-        assert not score['tester'](hand)
+        if score.get('name', '') != 'nothing':
+            assert not score['tester'](hand)
+    assert is_nothing(hand)
+
+
+
+def test_nothing_is_nothing():
+    hand = Hand()
+    hand.receive(Card(12, 'heart'))
+    hand.receive(Card(10, 'club'))
+    hand.receive(Card(8, 'diamond'))
+    hand.receive(Card(6, 'spade'))
+    hand.receive(Card(4, 'heart'))
+    for score in SCORES:
+        if score.get('name', '') != 'nothing':
+            assert not score['tester'](hand)
+    assert is_nothing(hand)
 
 
 def test_royal_flush():
@@ -110,15 +127,3 @@ def test_is_two_pair():
     hand.receive(Card(7, 'diamond'))
     hand.receive(Card(8, 'heart'))
     assert is_two_pair(hand)
-
-
-def test_nothing_is_nothing():
-    hand = Hand()
-    hand.receive(Card(12, 'heart'))
-    hand.receive(Card(10, 'club'))
-    hand.receive(Card(8, 'diamond'))
-    hand.receive(Card(6, 'spade'))
-    hand.receive(Card(4, 'heart'))
-    for score in SCORES:
-        assert not score['tester'](hand)
-

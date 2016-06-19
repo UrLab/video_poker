@@ -10,7 +10,7 @@ def is_straight_flush(hand):
 
 
 def is_4_of_a_kind(hand):
-    if len(hand) <4:
+    if len(hand) < 4:
         return False
     i = 0
     while i < 5:
@@ -77,8 +77,8 @@ def is_two_pair(hand):
     # it can be on an ordered list
     # AABBC CAABB AACBB
     s_hands = hand.sorted()
-    return has_n_in_hand(s_hands, 0, 2) and has_n_in_hand(s_hands, 2, 2)\
-           or has_n_in_hand(s_hands, 1, 2) and has_n_in_hand(s_hands, 3, 2)\
+    return has_n_in_hand(s_hands, 0, 2) and has_n_in_hand(s_hands, 2, 2) \
+           or has_n_in_hand(s_hands, 1, 2) and has_n_in_hand(s_hands, 3, 2) \
            or has_n_in_hand(s_hands, 0, 2) and has_n_in_hand(s_hands, 3, 2)
 
 
@@ -93,3 +93,16 @@ def has_n_in_hand(hand, card_i, n):
                 same += 1
         j += 1
     return same == n
+
+
+def is_nothing(hand):
+    return not (
+        is_royal_flush(hand) or
+        is_straight_flush(hand) or
+        is_4_of_a_kind(hand) or
+        is_full_house(hand) or
+        is_flush(hand) or
+        is_straight(hand) or
+        is_3_of_a_kind(hand) or
+        is_two_pair(hand)
+    )

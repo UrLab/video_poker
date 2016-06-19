@@ -1,5 +1,7 @@
 from poker.scoring import is_royal_flush, is_straight_flush, is_4_of_a_kind, \
-    is_full_house, is_flush, is_straight, is_3_of_a_kind, is_two_pair
+    is_full_house, is_flush, is_straight, is_3_of_a_kind, is_two_pair, \
+    is_nothing
+
 
 SCORES = [
     {
@@ -54,6 +56,6 @@ SCORES = [
         'name': 'nothing',
         'ranking': 8,
         'payout': 0,
-        'tester': lambda x: True
+        'tester': is_nothing
     }
 ]
