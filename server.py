@@ -2,7 +2,8 @@ import binascii
 import random
 
 import os
-
+import time
+import json
 from flask import Flask, render_template
 from flask_restful import reqparse
 from flask_restful import Resource, Api
@@ -42,6 +43,9 @@ class TeamGeneration(Resource):
             'step': 0,
             'refill': 0
         }
+        with open('dumps.json', 'w') as outfile:
+            outfile.write(json.dumps(dumpjson(db)))
+            outfile.close()
         return {'token': token}
 
 
@@ -57,11 +61,44 @@ class Team(Resource):
             }
 
 
+def dumpjson(db):
+    out = {}
+    for k in db:
+        out[k] = {
+            'name': db[k]['name'],
+            'balance': db[k]['mgr'].get_balance(),
+            'turn': db[k]['turn'],
+            'refill': db[k]['refill'],
+            'total': db[k]['mgr'].get_balance() - db[k]['refill'] * 65
+             
+        }
+    return out
+
+def loadjson():
+    global db
+    with open('dumps.json') as data_file:
+        data = json.load(data_file)
+        dbb = {}
+        for t in data:
+            dbb[t] = {
+                'name': data[t]['name'],
+                'balance': data[t]['balance'],
+                'turn': data[t]['turn'],
+                'refill': data[t]['refill'],
+                'total': data[t]['total'],
+                'step': 0,
+                'mgr': PokerGame(data[t]['name'], int(data[t]['balance']))               
+            }
+        db = dbb
+   
 class Game(Resource):
     def post(self, token):
         args = parser.parse_args()
         if token not in db:
             return {'error': 'cannot help you with invalid token bro'}
+        with open('dumps.json', 'w') as outfile:
+            outfile.write(json.dumps(dumpjson(db)))
+            outfile.close()
         game = db[token]
         if game['step'] == 0:
             # we expect a bet
@@ -70,6 +107,8 @@ class Game(Resource):
             bet = args['bet']
             if game['mgr'].get_balance() < bet:
                 return {'error': 'you poor basterd'}
+            if bet < 0:
+                return {'error': 'finished this guy'}
             game['mgr'].make_turn(bet)
             cards = game['mgr'].get_json_cards()
             game['step'] += 1
@@ -94,7 +133,6 @@ class Game(Resource):
                 'payout': res['payout'],
                 'balance': game['mgr'].get_balance()
             }
-
 
 class LeaderBoard(Resource):
     def get(self):
@@ -131,4 +169,5 @@ api.add_resource(Game, '/video_poker/api/game/<string:token>')
 api.add_resource(YouPoorBitch, '/video_poker/api/refill/<string:token>')
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    loadjson()
+    app.run(host="0.0.0.0")

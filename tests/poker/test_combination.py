@@ -128,6 +128,15 @@ def test_3_of_a_kind():
     hand.receive(Card(8, 'heart'))
     assert is_3_of_a_kind(hand)
 
+def test_is_not_two_pair():
+    hand = Hand()
+    hand.receive(Card(9, 'heart'))
+    hand.receive(Card(9, 'club'))
+    hand.receive(Card(9, 'spade'))
+    hand.receive(Card(7, 'diamond'))
+    hand.receive(Card(8, 'heart'))
+    assert not is_two_pair(hand)
+
 
 def test_is_two_pair():
     hand = Hand()
@@ -137,3 +146,13 @@ def test_is_two_pair():
     hand.receive(Card(7, 'diamond'))
     hand.receive(Card(8, 'heart'))
     assert is_two_pair(hand)
+
+
+def test_is_not_full_house():
+    hand = Hand()
+    hand.receive(Card(9, 'heart'))
+    hand.receive(Card(9, 'club'))
+    hand.receive(Card(9, 'spade'))
+    hand.receive(Card(7, 'diamond'))
+    hand.receive(Card(8, 'heart'))
+    assert not is_full_house(hand)
