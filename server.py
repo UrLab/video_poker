@@ -4,7 +4,7 @@ import random
 import os
 
 from flask import Flask
-from flask.ext.restful import reqparse
+from flask_restful import reqparse
 from flask_restful import Resource, Api
 from poker.poker import PokerGame
 
@@ -23,7 +23,7 @@ parser.add_argument('exchange', type=list, help='Gimme list of index nom nom')
 parser.add_argument('bet', type=int, help='OMany Int Money you got to loose')
 
 
-class UserGeneration(Resource):
+class TeamGeneration(Resource):
     def get(self, name):
         # creation of a token
         token = get_token()
@@ -37,10 +37,16 @@ class UserGeneration(Resource):
         return {'token': token}
 
 
-class User(Resource):
+class Team(Resource):
     def get(self, token):
         if token in db:
-            return db[token]['mgr'].get_balance()
+            return {
+                'balance': db[token]['mgr'].get_balance(),
+                'turn': db[token]['turn'],
+                'step': db[token]['step'],
+                'refill': db[token]['refill'],
+                'total': db[token]['mgr'].get_balance() - db[token]['refill'] * 65
+            }
 
 
 class Game(Resource):
@@ -90,8 +96,16 @@ class LeaderBoard(Resource):
                 'balance': db[k]['mgr'].get_balance(),
                 'turn': db[k]['turn'],
                 'refill': db[k]['refill'],
-                'total': db[k]['mgr'].get_balance() - db[k]['refill'] * 50
+                'total': db[k]['mgr'].get_balance() - db[k]['refill'] * 65
             }
+        return out
+
+
+class TokenMatching(Resource):
+    def get(self):
+        out = {}
+        for k in db:
+            out[db[k]['name']] = k
         return out
 
 
@@ -101,11 +115,12 @@ class YouPoorBitch(Resource):
         db[token]['refill'] += 1
 
 
-api.add_resource(UserGeneration, '/video_poker/api/user/generation/<string:name>')
-api.add_resource(User, '/video_poker/api/user/<string:token>')
+api.add_resource(TeamGeneration, '/video_poker/api/team/generation/<string:name>')
+api.add_resource(Team, '/video_poker/api/team/<string:token>')
 api.add_resource(LeaderBoard, '/video_poker/api/leaderboard')
+api.add_resource(TokenMatching, '/video_poker/api/tokenmatching')
 api.add_resource(Game, '/video_poker/api/game/<string:token>')
-api.add_resource(YouPoorBitch, '/video_poker/api/b1g6fb2ee6a4hfd2geg3/<string:token>')
+api.add_resource(YouPoorBitch, '/video_poker/api/refill/<string:token>')
 
 if __name__ == "__main__":
     app.run(debug=True)

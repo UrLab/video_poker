@@ -7,13 +7,13 @@ SCORES = [
     {
         'name': 'Royal Flush',
         'ranking': 0,
-        'payout': 2500,
+        'payout': 110,
         'tester': is_royal_flush
     },
     {
         'name': 'Straight Flush',
         'ranking': 1,
-        'payout': 50,
+        'payout': 40,
         'tester': is_straight_flush
     },
     {
