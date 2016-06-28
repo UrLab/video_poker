@@ -123,4 +123,4 @@ api.add_resource(Game, '/video_poker/api/game/<string:token>')
 api.add_resource(YouPoorBitch, '/video_poker/api/refill/<string:token>')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
