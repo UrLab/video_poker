@@ -2,4 +2,5 @@
 pytest
 
 ## server
-tornado
+flask-restful
+flask

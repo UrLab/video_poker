@@ -15,6 +15,17 @@ class PokerGame(object):
     def get_balance(self):
         return self.balance
 
+    def get_json_cards(self):
+        c = []
+        for i in range(len(self.hand.cards)):
+            card = self.hand[i]
+            c.append({
+                'rank': card.get_rank(),
+                'suit': card.get_suit(),
+                'index': i
+            })
+        return c
+
     def make_turn(self, bet):
         self.bet = bet
         for i in range(5):
