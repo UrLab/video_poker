@@ -3,13 +3,21 @@ import random
 
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 from flask_restful import reqparse
 from flask_restful import Resource, Api
+from flaskext.markdown import Markdown
 from poker.poker import PokerGame
 
 app = Flask(__name__)
 api = Api(app)
+Markdown(app)
+
+
+@app.route("/video_poker/HOW_TO")
+def howto():
+    return render_template("howto.html")
+
 
 db = {}
 

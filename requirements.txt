@@ -4,3 +4,4 @@ pytest
 ## server
 flask-restful
 flask
+Flask-Markdown
